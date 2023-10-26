@@ -1,8 +1,8 @@
 const Ship = require("../src/ship");
 
-let exampleShip = null;
-
 describe("Test ship class and properties", () => {
+  let exampleShip = null;
+
   beforeAll(() => {
     exampleShip = new Ship(3);
   });
@@ -29,27 +29,28 @@ describe("Test ship class and properties", () => {
 
 describe("Tests for Ship's length", () => {
   test("Ship constructor makes negative length values positive", () => {
-    exampleShip = new Ship(-3);
+    let exampleShip = new Ship(-3);
     expect(exampleShip.length).toBe(3);
   });
 
   test("Ship length defaults to 1 when passed 0", () => {
-    exampleShip = new Ship(0);
+    let exampleShip = new Ship(0);
     expect(exampleShip.length).toBe(1);
   });
 
   test("Ship length defaults to 1 when passed an non integer value", () => {
-    exampleShip = new Ship("foo");
+    let exampleShip = new Ship("foo");
     expect(exampleShip.length).toBe(1);
   });
 
   test("Ship length is floored when passed decimal values", () => {
-    exampleShip = new Ship(2.1);
+    let exampleShip = new Ship(2.1);
     expect(exampleShip.length).toBe(2);
   });
 });
 
 describe("Test ship's hit() and isSunk() method", () => {
+  let exampleShip = null;
   beforeEach(() => {
     exampleShip = new Ship(3);
   });
