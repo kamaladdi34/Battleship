@@ -5,11 +5,15 @@ class Ship {
   }
 
   hit() {
-    this.#hits++;
+    if (!this.isSunk()) this.#hits++;
   }
 
   isSunk() {
     return this.#hits >= this.length;
+  }
+
+  get hits() {
+    return this.#hits;
   }
 
   #setLength(length) {

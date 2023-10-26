@@ -48,3 +48,46 @@ describe("Tests for Ship's length", () => {
     expect(exampleShip.length).toBe(2);
   });
 });
+
+describe("Test ship's hit() and isSunk() method", () => {
+  beforeEach(() => {
+    exampleShip = new Ship(3);
+  });
+
+  afterEach(() => {
+    exampleShip = null;
+  });
+
+  test("Calling hit() increments ship's hits", () => {
+    exampleShip.hit();
+    expect(exampleShip.hits).toBe(1);
+  });
+
+  test("isSunk() returns false when hits are less than length", () => {
+    exampleShip.hit();
+    expect(exampleShip.hits).toBe(1);
+    expect(exampleShip.isSunk()).toBe(false);
+    expect(exampleShip.length > exampleShip.hits).toBe(true);
+  });
+
+  test("isSunk() returns true when hits are more than or equal", () => {
+    exampleShip.hit();
+    exampleShip.hit();
+    exampleShip.hit();
+    expect(exampleShip.length).toBe(3);
+    expect(exampleShip.hits).toBe(3);
+    expect(exampleShip.isSunk()).toBe(true);
+    expect(exampleShip.length <= exampleShip.hits).toBe(true);
+  });
+
+  test("Ship cannot be hit when it's already sunk", () => {
+    exampleShip.hit();
+    exampleShip.hit();
+    exampleShip.hit();
+    exampleShip.hit();
+    expect(exampleShip.length).toBe(3);
+    expect(exampleShip.hits).toBe(3);
+    expect(exampleShip.isSunk()).toBe(true);
+    expect(exampleShip.length <= exampleShip.hits).toBe(true);
+  });
+});
