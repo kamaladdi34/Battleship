@@ -71,7 +71,30 @@ describe("Tests for GameBoard placeShip() method", () => {
 
   test("GameBoard doesn't place ship when there is no space for it", () => {
     let gameBoard = new GameBoard(10);
-    return expect(gameBoard.placeShip({ x: 0, y: 0 }, 3)).rejects.toMatch(
+    return expect(gameBoard.placeShip({ x: 0, y: 8 }, 3)).rejects.toMatch(
+      "Not enough space"
+    );
+  });
+
+  test("GameBoard doesn't place ship when there is no space for it", () => {
+    let gameBoard = new GameBoard(10);
+    return expect(gameBoard.placeShip({ x: 9, y: 0 }, 11)).rejects.toMatch(
+      "Not enough space"
+    );
+  });
+
+  test("GameBoard places ship with length 3 vertically", () => {
+    let gameBoard = new GameBoard(10);
+    gameBoard.placeShip({ x: 0, y: 0 }, 3, true);
+    let ship = new Ship(3);
+    expect(gameBoard.getCell({ x: 0, y: 0 })).toEqual(ship);
+    expect(gameBoard.getCell({ x: 1, y: 0 })).toEqual(ship);
+    expect(gameBoard.getCell({ x: 2, y: 0 })).toEqual(ship);
+  });
+
+  test("GameBoard doesn't place ship when there is no space for it", () => {
+    let gameBoard = new GameBoard(10);
+    return expect(gameBoard.placeShip({ x: 5, y: 0 }, 6, true)).rejects.toMatch(
       "Not enough space"
     );
   });
