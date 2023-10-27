@@ -2,9 +2,11 @@ const Ship = require("./ship");
 
 class GameBoard {
   #board = null;
+
   constructor(size) {
     this.generateBoard(size);
   }
+
   placeShip(coordinates, shipLength, isVertical = false) {
     let { x, y } = coordinates;
     return new Promise((resolve, reject) => {
@@ -33,6 +35,7 @@ class GameBoard {
       resolve(newShip);
     });
   }
+
   #checkForSpace(coordinates, shipLength, isVertical) {
     let { x, y } = coordinates;
     let canPlaceShip = true;
@@ -54,6 +57,7 @@ class GameBoard {
     }
     return canPlaceShip;
   }
+
   #coordinatesInRange(coordinates) {
     let { x, y } = coordinates;
     return !(
@@ -63,11 +67,18 @@ class GameBoard {
       y >= this.#board.length
     );
   }
-  receiveAttack() {}
+
+  receiveAttack(coordinates) {
+    let { x, y } = coordinates;
+    this.#board[x][y].hit();
+  }
+
   allShipsAreSunk() {}
+
   getCell(coordinates) {
     return this.#board[coordinates.x][coordinates.y];
   }
+
   generateBoard(size) {
     this.#board = new Array(size).fill("").map((_) => new Array(size).fill(""));
   }

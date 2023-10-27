@@ -110,3 +110,24 @@ describe("Tests for GameBoard placeShip() method", () => {
     expect(gameBoard.getCell({ x: 9, y: 1 })).toEqual("");
   });
 });
+
+describe("Tests for receiveAttack() method", () => {
+  let gameBoard = null;
+
+  beforeEach(() => {
+    gameBoard = new GameBoard(10);
+    let coords = { x: 5, y: 5 };
+    gameBoard.placeShip(coords, 3, false);
+  });
+
+  afterEach(() => {
+    gameBoard = null;
+  });
+
+  test("Ship gets hit", () => {
+    let coords = { x: 5, y: 5 };
+    gameBoard.receiveAttack(coords);
+    let cell = gameBoard.getCell(coords);
+    expect(cell.hits).toBeGreaterThan(0);
+  });
+});
