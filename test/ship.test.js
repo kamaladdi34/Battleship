@@ -1,33 +1,25 @@
 const Ship = require("../src/ship");
 
 describe("Test ship class and properties", () => {
-  let exampleShip = null;
-
-  beforeAll(() => {
-    exampleShip = new Ship(3);
-  });
-
-  afterAll(() => {
-    exampleShip = null;
-  });
   test("Ship class exists", () => {
     expect(Ship).toBeDefined();
   });
 
-  test("Ship has length", () => {
-    expect(exampleShip.length).toBe(3);
-  });
-
   test("Ship has hit() method", () => {
-    expect(exampleShip.hit).toBeDefined();
+    expect(Ship.prototype.hit).toBeDefined();
   });
 
   test("Ship has isSunk() method", () => {
-    expect(exampleShip.isSunk).toBeDefined();
+    expect(Ship.prototype.isSunk).toBeDefined();
   });
 });
 
 describe("Tests for Ship's length", () => {
+  test("Ship has length property", () => {
+    let exampleShip = new Ship(1);
+    expect(exampleShip.length).toBeDefined();
+  });
+
   test("Ship constructor makes negative length values positive", () => {
     let exampleShip = new Ship(-3);
     expect(exampleShip.length).toBe(3);
