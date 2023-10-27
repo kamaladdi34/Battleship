@@ -98,4 +98,15 @@ describe("Tests for GameBoard placeShip() method", () => {
       "Not enough space"
     );
   });
+
+  test("GameBoard places ship at [6,1] with a length of 3", async () => {
+    let gameBoard = new GameBoard(10);
+    await expect(gameBoard.placeShip({ x: 6, y: 1 }, 3, true)).resolves.toEqual(
+      { length: 3 }
+    );
+    expect(gameBoard.getCell({ x: 6, y: 1 })).toEqual({ length: 3 });
+    expect(gameBoard.getCell({ x: 7, y: 1 })).toEqual({ length: 3 });
+    expect(gameBoard.getCell({ x: 8, y: 1 })).toEqual({ length: 3 });
+    expect(gameBoard.getCell({ x: 9, y: 1 })).toEqual("");
+  });
 });
