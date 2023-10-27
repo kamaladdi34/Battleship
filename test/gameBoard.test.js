@@ -47,7 +47,7 @@ describe("Tests for GameBoard placeShip() method", () => {
 
   test("GameBoard returns error when providing incorrect coordinates", () => {
     let gameBoard = new GameBoard(10);
-    expect(gameBoard.placeShip({ x: 22, y: 22 }, 1)).rejects.toMatch(
+    return expect(gameBoard.placeShip({ x: 22, y: 22 }, 1)).rejects.toMatch(
       "Coordinates out of range"
     );
   });
@@ -67,5 +67,12 @@ describe("Tests for GameBoard placeShip() method", () => {
     expect(gameBoard.getCell({ x: 0, y: 0 })).toEqual(ship);
     expect(gameBoard.getCell({ x: 0, y: 1 })).toEqual(ship);
     expect(gameBoard.getCell({ x: 0, y: 2 })).toEqual(ship);
+  });
+
+  test("GameBoard doesn't place ship when there is no space for it", () => {
+    let gameBoard = new GameBoard(10);
+    return expect(gameBoard.placeShip({ x: 0, y: 0 }, 3)).rejects.toMatch(
+      "Not enough space"
+    );
   });
 });
