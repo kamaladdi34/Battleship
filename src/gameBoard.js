@@ -64,7 +64,6 @@ class GameBoard {
           !this.#checkCoordinates(coords) ||
           this.#board[x + i][y].ship !== null
         ) {
-          console.log(coords);
           canPlaceShip = false;
         }
       }
@@ -101,13 +100,16 @@ class GameBoard {
       return;
     }
     if (this.#board[x][y].isHit == true) {
-      return;
+      return { success: false, shipHit: false, error: "Cell already hit" };
     }
     this.#board[x][y].isHit = true;
+
     if (this.#board[x][y].ship == null) {
-      return;
+      return { success: true, shipHit: false, error: null };
     }
+
     this.#board[x][y].ship.hit();
+    return { success: true, shipHit: true, error: null };
   }
 
   allShipsAreSunk() {
@@ -126,7 +128,7 @@ class GameBoard {
   generateBoard(size) {
     this.#board = new Array(size)
       .fill("")
-      .map((_) => new Array(size).fill(new Cell()));
+      .map((_) => new Array(size).fill("").map((_) => new Cell()));
   }
 }
 
