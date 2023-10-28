@@ -2,7 +2,7 @@ const Ship = require("./ship");
 
 class GameBoard {
   #board = null;
-
+  #ships = [];
   constructor(size) {
     this.generateBoard(size);
   }
@@ -33,6 +33,7 @@ class GameBoard {
         }
       }
       resolve(newShip);
+      this.#ships.push(newShip);
     });
   }
 
