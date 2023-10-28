@@ -94,8 +94,15 @@ class GameBoard {
     this.#board[x][y].hit();
   }
 
-  allShipsAreSunk() {}
-
+  allShipsAreSunk() {
+    let allAreSunk = true;
+    for (let i = 0; i < this.#ships.length; i++) {
+      if (!this.#ships[i].isSunk()) {
+        allAreSunk = false;
+      }
+    }
+    return allAreSunk;
+  }
   getCell(coordinates) {
     return this.#board[coordinates.x][coordinates.y];
   }

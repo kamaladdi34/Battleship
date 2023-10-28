@@ -138,3 +138,39 @@ describe("Tests for receiveAttack() method", () => {
     expect(cell).toBe("X");
   });
 });
+
+describe("Tests for allShipsAreSunk() method", () => {
+  test("allShipsAreSunk() with one Ship with a length of 1 returns true", () => {
+    let gameBoard = null;
+    gameBoard = new GameBoard(10);
+    let coords = { x: 5, y: 5 };
+    gameBoard.placeShip(coords, 1, false);
+    gameBoard.receiveAttack({ x: 5, y: 5 });
+    expect(gameBoard.allShipsAreSunk()).toBe(true);
+  });
+
+  test("allShipsAreSunk() with two Ships with a length of 2 returns true", () => {
+    let gameBoard = null;
+    gameBoard = new GameBoard(10);
+    let coords = { x: 0, y: 0 };
+    gameBoard.placeShip(coords, 2, false);
+    gameBoard.receiveAttack({ x: 0, y: 0 });
+    gameBoard.receiveAttack({ x: 0, y: 1 });
+    gameBoard.placeShip({ x: 1, y: 0 }, 2, false);
+    gameBoard.receiveAttack({ x: 1, y: 0 });
+    gameBoard.receiveAttack({ x: 1, y: 1 });
+    expect(gameBoard.allShipsAreSunk()).toBe(true);
+  });
+
+  test("allShipsAreSunk() with one ship sunk and one not sunk returns false", () => {
+    let gameBoard = null;
+    gameBoard = new GameBoard(10);
+    let coords = { x: 0, y: 0 };
+    gameBoard.placeShip(coords, 2, false);
+    gameBoard.receiveAttack({ x: 0, y: 0 });
+    gameBoard.receiveAttack({ x: 0, y: 1 });
+    gameBoard.placeShip({ x: 1, y: 0 }, 2, false);
+    gameBoard.receiveAttack({ x: 1, y: 0 });
+    expect(gameBoard.allShipsAreSunk()).toBe(false);
+  });
+});
