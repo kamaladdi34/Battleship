@@ -100,6 +100,9 @@ class GameBoard {
     if (!this.#checkCoordinates(coordinates)) {
       return;
     }
+    if (this.#board[x][y].isHit == true) {
+      return;
+    }
     this.#board[x][y].isHit = true;
     if (this.#board[x][y].ship == null) {
       return;
