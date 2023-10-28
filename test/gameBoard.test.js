@@ -27,14 +27,14 @@ describe("Tests for GameBoard placeShip() method", () => {
     let gameBoard = new GameBoard(10);
     gameBoard.placeShip({ x: 0, y: 0 }, 1);
     let ship = new Ship(1);
-    expect(gameBoard.getCell({ x: 0, y: 0 })).toEqual(ship);
+    expect(gameBoard.getCell({ x: 0, y: 0 }).ship).toEqual(ship);
   });
 
   test("GameBoard places ship with length of 1 at [1,1]", () => {
     let gameBoard = new GameBoard(10);
     gameBoard.placeShip({ x: 1, y: 1 }, 1);
     let ship = new Ship(1);
-    expect(gameBoard.getCell({ x: 1, y: 1 })).toEqual(ship);
+    expect(gameBoard.getCell({ x: 1, y: 1 }).ship).toEqual(ship);
   });
 
   test("GameBoard places doesn't place a ship when target is not empty", () => {
@@ -56,17 +56,17 @@ describe("Tests for GameBoard placeShip() method", () => {
     let gameBoard = new GameBoard(10);
     gameBoard.placeShip({ x: 0, y: 0 }, 2);
     let ship = new Ship(2);
-    expect(gameBoard.getCell({ x: 0, y: 0 })).toEqual(ship);
-    expect(gameBoard.getCell({ x: 0, y: 1 })).toEqual(ship);
+    expect(gameBoard.getCell({ x: 0, y: 0 }).ship).toEqual(ship);
+    expect(gameBoard.getCell({ x: 0, y: 1 }).ship).toEqual(ship);
   });
 
   test("GameBoard places ship with length of 3 at [0,0]", () => {
     let gameBoard = new GameBoard(10);
     gameBoard.placeShip({ x: 0, y: 0 }, 3);
     let ship = new Ship(3);
-    expect(gameBoard.getCell({ x: 0, y: 0 })).toEqual(ship);
-    expect(gameBoard.getCell({ x: 0, y: 1 })).toEqual(ship);
-    expect(gameBoard.getCell({ x: 0, y: 2 })).toEqual(ship);
+    expect(gameBoard.getCell({ x: 0, y: 0 }).ship).toEqual(ship);
+    expect(gameBoard.getCell({ x: 0, y: 1 }).ship).toEqual(ship);
+    expect(gameBoard.getCell({ x: 0, y: 2 }).ship).toEqual(ship);
   });
 
   test("GameBoard doesn't place ship when there is no space for it", () => {
@@ -87,9 +87,9 @@ describe("Tests for GameBoard placeShip() method", () => {
     let gameBoard = new GameBoard(10);
     gameBoard.placeShip({ x: 0, y: 0 }, 3, true);
     let ship = new Ship(3);
-    expect(gameBoard.getCell({ x: 0, y: 0 })).toEqual(ship);
-    expect(gameBoard.getCell({ x: 1, y: 0 })).toEqual(ship);
-    expect(gameBoard.getCell({ x: 2, y: 0 })).toEqual(ship);
+    expect(gameBoard.getCell({ x: 0, y: 0 }).ship).toEqual(ship);
+    expect(gameBoard.getCell({ x: 1, y: 0 }).ship).toEqual(ship);
+    expect(gameBoard.getCell({ x: 2, y: 0 }).ship).toEqual(ship);
   });
 
   test("GameBoard doesn't place ship when there is no space for it", () => {
@@ -104,10 +104,10 @@ describe("Tests for GameBoard placeShip() method", () => {
     await expect(gameBoard.placeShip({ x: 6, y: 1 }, 3, true)).resolves.toEqual(
       { length: 3 }
     );
-    expect(gameBoard.getCell({ x: 6, y: 1 })).toEqual({ length: 3 });
-    expect(gameBoard.getCell({ x: 7, y: 1 })).toEqual({ length: 3 });
-    expect(gameBoard.getCell({ x: 8, y: 1 })).toEqual({ length: 3 });
-    expect(gameBoard.getCell({ x: 9, y: 1 })).toEqual("");
+    expect(gameBoard.getCell({ x: 6, y: 1 }).ship).toEqual({ length: 3 });
+    expect(gameBoard.getCell({ x: 7, y: 1 }).ship).toEqual({ length: 3 });
+    expect(gameBoard.getCell({ x: 8, y: 1 }).ship).toEqual({ length: 3 });
+    expect(gameBoard.getCell({ x: 9, y: 1 }).ship).toBe(null);
   });
 });
 
@@ -128,14 +128,16 @@ describe("Tests for receiveAttack() method", () => {
     let coords = { x: 5, y: 5 };
     gameBoard.receiveAttack(coords);
     let cell = gameBoard.getCell(coords);
-    expect(cell.hits).toBeGreaterThan(0);
+    expect(cell.ship.hits).toBeGreaterThan(0);
+    expect(cell.isHit).toBe(true);
   });
 
-  test("Board cell is replaced with a string 'X' when there is no ship", () => {
+  test("Board cell registers hit", () => {
     let coords = { x: 0, y: 0 };
     gameBoard.receiveAttack(coords);
     let cell = gameBoard.getCell(coords);
-    expect(cell).toBe("X");
+    expect(cell.isHit).toBe(true);
+    expect(cell.ship).toBeNull();
   });
 });
 

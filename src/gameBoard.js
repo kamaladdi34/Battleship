@@ -1,5 +1,12 @@
 const Ship = require("./ship");
 
+class Cell {
+  constructor() {
+    this.ship = null;
+    this.isHit = false;
+  }
+}
+
 class GameBoard {
   #board = null;
   #ships = [];
@@ -14,7 +21,7 @@ class GameBoard {
         reject("Coordinates out of range");
         return;
       }
-      if (this.#board[x][y] !== "") {
+      if (this.#board[x][y].ship !== null) {
         reject("Target coordinates not empty");
         return;
       }
@@ -25,11 +32,11 @@ class GameBoard {
       let newShip = new Ship(shipLength);
       if (!isVertical) {
         for (let i = 0; i < shipLength; i++) {
-          this.#board[x][y + i] = newShip;
+          this.#board[x][y + i].ship = newShip;
         }
       } else {
         for (let i = 0; i < shipLength; i++) {
-          this.#board[x + i][y] = newShip;
+          this.#board[x + i][y].ship = newShip;
         }
       }
       resolve(newShip);
@@ -43,14 +50,20 @@ class GameBoard {
     if (!isVertical) {
       for (let i = 0; i < shipLength; i++) {
         let coords = { x: x, y: y + i };
-        if (!this.#checkCoordinates(coords) || this.#board[x][y + i] !== "") {
+        if (
+          !this.#checkCoordinates(coords) ||
+          this.#board[x][y + i].ship !== null
+        ) {
           canPlaceShip = false;
         }
       }
     } else {
       for (let i = 0; i < shipLength; i++) {
         let coords = { x: x + i, y: y };
-        if (!this.#checkCoordinates(coords) || this.#board[x + i][y] !== "") {
+        if (
+          !this.#checkCoordinates(coords) ||
+          this.#board[x + i][y].ship !== null
+        ) {
           console.log(coords);
           canPlaceShip = false;
         }
@@ -87,11 +100,11 @@ class GameBoard {
     if (!this.#checkCoordinates(coordinates)) {
       return;
     }
-    if (this.#board[x][y] === "") {
-      this.#board[x][y] = "X";
+    this.#board[x][y].isHit = true;
+    if (this.#board[x][y].ship == null) {
       return;
     }
-    this.#board[x][y].hit();
+    this.#board[x][y].ship.hit();
   }
 
   allShipsAreSunk() {
@@ -108,7 +121,9 @@ class GameBoard {
   }
 
   generateBoard(size) {
-    this.#board = new Array(size).fill("").map((_) => new Array(size).fill(""));
+    this.#board = new Array(size)
+      .fill("")
+      .map((_) => new Array(size).fill(new Cell()));
   }
 }
 
