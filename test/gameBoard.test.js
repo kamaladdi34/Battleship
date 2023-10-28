@@ -124,10 +124,17 @@ describe("Tests for receiveAttack() method", () => {
     gameBoard = null;
   });
 
-  test("Ship gets hit", () => {
+  test("Ship gets hit when calling receiveAttack()", () => {
     let coords = { x: 5, y: 5 };
     gameBoard.receiveAttack(coords);
     let cell = gameBoard.getCell(coords);
     expect(cell.hits).toBeGreaterThan(0);
+  });
+
+  test("Board cell is replaced with a string 'X' when there is no ship", () => {
+    let coords = { x: 0, y: 0 };
+    gameBoard.receiveAttack(coords);
+    let cell = gameBoard.getCell(coords);
+    expect(cell).toBe("X");
   });
 });

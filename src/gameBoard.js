@@ -10,7 +10,7 @@ class GameBoard {
   placeShip(coordinates, shipLength, isVertical = false) {
     let { x, y } = coordinates;
     return new Promise((resolve, reject) => {
-      if (!this.#coordinatesInRange(coordinates)) {
+      if (!this.#checkCoordinates(coordinates)) {
         reject("Coordinates out of range");
         return;
       }
@@ -42,14 +42,14 @@ class GameBoard {
     if (!isVertical) {
       for (let i = 0; i < shipLength; i++) {
         let coords = { x: x, y: y + i };
-        if (!this.#coordinatesInRange(coords) || this.#board[x][y + i] !== "") {
+        if (!this.#checkCoordinates(coords) || this.#board[x][y + i] !== "") {
           canPlaceShip = false;
         }
       }
     } else {
       for (let i = 0; i < shipLength; i++) {
         let coords = { x: x + i, y: y };
-        if (!this.#coordinatesInRange(coords) || this.#board[x + i][y] !== "") {
+        if (!this.#checkCoordinates(coords) || this.#board[x + i][y] !== "") {
           console.log(coords);
           canPlaceShip = false;
         }
@@ -68,8 +68,28 @@ class GameBoard {
     );
   }
 
+  #checkCoordinates(coordinates) {
+    if (!("x" in coordinates) || !("y" in coordinates)) {
+      return false;
+    }
+    if (isNaN(coordinates.x) || isNaN(coordinates.y)) {
+      return false;
+    }
+    if (!this.#coordinatesInRange(coordinates)) {
+      return false;
+    }
+    return true;
+  }
+
   receiveAttack(coordinates) {
     let { x, y } = coordinates;
+    if (!this.#checkCoordinates(coordinates)) {
+      return;
+    }
+    if (this.#board[x][y] === "") {
+      this.#board[x][y] = "X";
+      return;
+    }
     this.#board[x][y].hit();
   }
 
