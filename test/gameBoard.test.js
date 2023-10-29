@@ -92,6 +92,13 @@ describe("Tests for GameBoard placeShip() method", () => {
       "No ship found"
     );
   });
+  test("GameBoard places two ships of length 3", () => {
+    let gameBoard = new GameBoard(10);
+    gameBoard.placeShip({ x: 0, y: 0 }, 3);
+    return expect(gameBoard.placeShip({ x: 1, y: 0 }, 3)).resolves.toEqual(
+      new Ship(3)
+    );
+  });
 
   test("GameBoard places ship with length 3 vertically", () => {
     let gameBoard = new GameBoard(10);
