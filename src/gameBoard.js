@@ -10,6 +10,13 @@ class Cell {
 class GameBoard {
   #board = null;
   #ships = [];
+  #Allowedships = [
+    new Ship(5),
+    new Ship(4),
+    new Ship(3),
+    new Ship(3),
+    new Ship(2),
+  ];
   constructor(size) {
     this.generateBoard(size);
   }
@@ -29,7 +36,10 @@ class GameBoard {
         reject("Not enough space");
         return;
       }
-      let newShip = new Ship(shipLength);
+      let newShip = this.#getShip(shipLength);
+      if (!newShip) {
+        reject("No ship found");
+      }
       if (!isVertical) {
         for (let i = 0; i < shipLength; i++) {
           this.#board[x][y + i].ship = newShip;
@@ -42,6 +52,14 @@ class GameBoard {
       resolve(newShip);
       this.#ships.push(newShip);
     });
+  }
+
+  #getShip(shipLength) {
+    for (let i = 0; i < this.#Allowedships.length; i++) {
+      if (this.#Allowedships[i].length == shipLength) {
+        return this.#Allowedships.splice(i, 1)[0];
+      }
+    }
   }
 
   #checkForSpace(coordinates, shipLength, isVertical) {

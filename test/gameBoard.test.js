@@ -23,31 +23,33 @@ describe("Tests for GameBoard class and it's methods", () => {
 });
 
 describe("Tests for GameBoard placeShip() method", () => {
-  test("GameBoard places ship with length of 1 at [0,0]", () => {
+  test("GameBoard places ship with length of 2 at [0,0]", () => {
     let gameBoard = new GameBoard(10);
-    gameBoard.placeShip({ x: 0, y: 0 }, 1);
-    let ship = new Ship(1);
+    gameBoard.placeShip({ x: 0, y: 0 }, 2);
+    let ship = new Ship(2);
     expect(gameBoard.getCell({ x: 0, y: 0 }).ship).toEqual(ship);
+    expect(gameBoard.getCell({ x: 0, y: 1 }).ship).toEqual(ship);
   });
 
-  test("GameBoard places ship with length of 1 at [1,1]", () => {
+  test("GameBoard places ship with length of 2 at [1,1]", () => {
     let gameBoard = new GameBoard(10);
-    gameBoard.placeShip({ x: 1, y: 1 }, 1);
-    let ship = new Ship(1);
+    gameBoard.placeShip({ x: 1, y: 1 }, 2);
+    let ship = new Ship(2);
     expect(gameBoard.getCell({ x: 1, y: 1 }).ship).toEqual(ship);
+    expect(gameBoard.getCell({ x: 1, y: 2 }).ship).toEqual(ship);
   });
 
   test("GameBoard places doesn't place a ship when target is not empty", () => {
     let gameBoard = new GameBoard(10);
-    gameBoard.placeShip({ x: 0, y: 0 }, 1);
-    gameBoard.placeShip({ x: 0, y: 0 }, 1).catch((error) => {
+    gameBoard.placeShip({ x: 0, y: 0 }, 2);
+    gameBoard.placeShip({ x: 0, y: 0 }, 2).catch((error) => {
       expect(error).toBe("Target coordinates not empty");
     });
   });
 
   test("GameBoard returns error when providing incorrect coordinates", () => {
     let gameBoard = new GameBoard(10);
-    return expect(gameBoard.placeShip({ x: 22, y: 22 }, 1)).rejects.toMatch(
+    return expect(gameBoard.placeShip({ x: 22, y: 22 }, 2)).rejects.toMatch(
       "Coordinates out of range"
     );
   });
@@ -78,8 +80,16 @@ describe("Tests for GameBoard placeShip() method", () => {
 
   test("GameBoard doesn't place ship when there is no space for it", () => {
     let gameBoard = new GameBoard(10);
-    return expect(gameBoard.placeShip({ x: 9, y: 0 }, 11)).rejects.toMatch(
+    return expect(gameBoard.placeShip({ x: 9, y: 0 }, 5, true)).rejects.toMatch(
       "Not enough space"
+    );
+  });
+
+  test("GameBoard doesn't place two ships of length 5", () => {
+    let gameBoard = new GameBoard(10);
+    gameBoard.placeShip({ x: 0, y: 0 }, 5);
+    return expect(gameBoard.placeShip({ x: 1, y: 0 }, 5)).rejects.toMatch(
+      "No ship found"
     );
   });
 
@@ -94,7 +104,7 @@ describe("Tests for GameBoard placeShip() method", () => {
 
   test("GameBoard doesn't place ship when there is no space for it", () => {
     let gameBoard = new GameBoard(10);
-    return expect(gameBoard.placeShip({ x: 5, y: 0 }, 6, true)).rejects.toMatch(
+    return expect(gameBoard.placeShip({ x: 6, y: 0 }, 5, true)).rejects.toMatch(
       "Not enough space"
     );
   });
@@ -146,8 +156,9 @@ describe("Tests for allShipsAreSunk() method", () => {
     let gameBoard = null;
     gameBoard = new GameBoard(10);
     let coords = { x: 5, y: 5 };
-    gameBoard.placeShip(coords, 1, false);
+    gameBoard.placeShip(coords, 2, false);
     gameBoard.receiveAttack({ x: 5, y: 5 });
+    gameBoard.receiveAttack({ x: 5, y: 6 });
     expect(gameBoard.allShipsAreSunk()).toBe(true);
   });
 
@@ -158,9 +169,10 @@ describe("Tests for allShipsAreSunk() method", () => {
     gameBoard.placeShip(coords, 2, false);
     gameBoard.receiveAttack({ x: 0, y: 0 });
     gameBoard.receiveAttack({ x: 0, y: 1 });
-    gameBoard.placeShip({ x: 1, y: 0 }, 2, false);
+    gameBoard.placeShip({ x: 1, y: 0 }, 3, false);
     gameBoard.receiveAttack({ x: 1, y: 0 });
     gameBoard.receiveAttack({ x: 1, y: 1 });
+    gameBoard.receiveAttack({ x: 1, y: 2 });
     expect(gameBoard.allShipsAreSunk()).toBe(true);
   });
 
@@ -171,7 +183,7 @@ describe("Tests for allShipsAreSunk() method", () => {
     gameBoard.placeShip(coords, 2, false);
     gameBoard.receiveAttack({ x: 0, y: 0 });
     gameBoard.receiveAttack({ x: 0, y: 1 });
-    gameBoard.placeShip({ x: 1, y: 0 }, 2, false);
+    gameBoard.placeShip({ x: 1, y: 0 }, 3, false);
     gameBoard.receiveAttack({ x: 1, y: 0 });
     expect(gameBoard.allShipsAreSunk()).toBe(false);
   });
