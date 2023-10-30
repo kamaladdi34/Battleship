@@ -139,6 +139,9 @@ class GameBoard {
     }
     return allAreSunk;
   }
+  allShipsPlaced() {
+    return this.#Allowedships.length == 0;
+  }
   getCell(coordinates) {
     return this.#board[coordinates.x][coordinates.y];
   }

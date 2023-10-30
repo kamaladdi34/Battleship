@@ -20,6 +20,10 @@ describe("Tests for GameBoard class and it's methods", () => {
   test("GameBoard has getCell() method", () => {
     expect(GameBoard.prototype.getCell).toBeDefined();
   });
+
+  test("GameBoard has getCell() method", () => {
+    expect(GameBoard.prototype.allShipsPlaced).toBeDefined();
+  });
 });
 
 describe("Tests for GameBoard placeShip() method", () => {
@@ -193,5 +197,21 @@ describe("Tests for allShipsAreSunk() method", () => {
     gameBoard.placeShip({ x: 1, y: 0 }, 3, false);
     gameBoard.receiveAttack({ x: 1, y: 0 });
     expect(gameBoard.allShipsAreSunk()).toBe(false);
+  });
+});
+
+describe("Test for allShipsArePlaced()", () => {
+  test("allShipsArePlaced() returnes true when all ships are placed", () => {
+    let gameBoard = new GameBoard(10);
+    gameBoard.placeShip({ x: 0, y: 0 }, 5);
+    gameBoard.placeShip({ x: 1, y: 0 }, 4);
+    gameBoard.placeShip({ x: 2, y: 0 }, 3);
+    gameBoard.placeShip({ x: 3, y: 0 }, 3);
+    gameBoard.placeShip({ x: 4, y: 0 }, 2);
+    expect(gameBoard.allShipsPlaced()).toBe(true);
+  });
+  test("allShipsArePlaced() returnes false when no ship is placed", () => {
+    let gameBoard = new GameBoard(10);
+    expect(gameBoard.allShipsPlaced()).toBe(false);
   });
 });
