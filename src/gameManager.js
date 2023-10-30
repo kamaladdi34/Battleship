@@ -2,13 +2,16 @@ const GameBoard = require("./gameBoard");
 const Player = require("./player");
 
 class GameManager {
+  #gameStarted = false;
   constructor() {
     this.player = null;
     this.otherPlayer = null;
     this.playerBoard = null;
     this.otherBoard = null;
   }
-
+  get gameStarted() {
+    return this.#gameStarted;
+  }
   newGame(boardSize, players) {
     return new Promise((resolve, reject) => {
       if (!boardSize || !players || boardSize <= 0) {
@@ -33,6 +36,16 @@ class GameManager {
       this.otherBoard.placeShip({ x: 4, y: 0 }, 2);
       resolve("Game initiated");
     });
+  }
+  startGame() {
+    if (this.#gameStarted) {
+      return;
+    }
+    if (!this.playerBoard || !this.otherBoard) {
+      return false;
+    }
+    return (this.#gameStarted =
+      this.playerBoard.allShipsPlaced() && this.otherBoard.allShipsPlaced());
   }
 }
 module.exports = GameManager;
