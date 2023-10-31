@@ -5,6 +5,9 @@ test("Game manager has a newGame() funciton", () => {
 test("Game manager has a startGame() funciton", () => {
   expect(GameManager.prototype.startGame).toBeDefined();
 });
+test("Game manager has a playTurn() funciton", () => {
+  expect(GameManager.prototype.playTurn).toBeDefined();
+});
 
 test("Game manager newGame() initiates a new game", () => {
   let gameManager = new GameManager();
@@ -22,7 +25,7 @@ test("startGame() doesn't start game when boards not set up", () => {
   expect(gameManager.startGame()).toBe(false);
 });
 
-test("startGame() doesn't starts game when boards set up", async () => {
+test("startGame() starts game when boards set up", async () => {
   let gameManager = new GameManager();
 
   let playerInfo = [
@@ -34,4 +37,20 @@ test("startGame() doesn't starts game when boards set up", async () => {
   );
   expect(gameManager.startGame()).toBe(true);
   expect(gameManager.gameStarted).toBe(true);
+});
+
+test("startGame() doesn't starts game when playerInfo is undefined", async () => {
+  let gameManager = new GameManager();
+
+  let playerInfo = undefined;
+  await expect(gameManager.newGame(10, playerInfo)).rejects.toMatch(
+    "Incorrect game info"
+  );
+  expect(gameManager.startGame()).toBe(false);
+  expect(gameManager.gameStarted).toBe(false);
+});
+
+test("playTurn() returns false when game didn't start yet", () => {
+  let gameManager = new GameManager();
+  expect(gameManager.playTurn({ x: 2, y: 1 })).toBe(undefined);
 });
