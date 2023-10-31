@@ -23,6 +23,7 @@ test("Game manager newGame() initiates a new game", () => {
 test("startGame() doesn't start game when boards not set up", () => {
   let gameManager = new GameManager();
   expect(gameManager.startGame()).toBe(false);
+  expect(gameManager.gameStarted).toBe(false);
 });
 
 test("startGame() starts game when boards set up", async () => {
