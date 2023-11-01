@@ -1,17 +1,23 @@
 const GameManager = require("./gameManager.js");
 const boardsContainer = document.querySelector(".boards-container");
-document.addEventListener("click", (event) => {
-  console.dir(event.target.parentNode.id);
-});
 let players = [
   { name: "player one", isComputer: false },
   { name: "player two", isComputer: false },
 ];
 const gameManager = new GameManager();
+document.addEventListener("click", (event) => {
+  if (event.target.parentNode.id == "other") {
+    let coords = event.target.getAttribute("data-coordinates").split(":");
+    gameManager.playTurn({ x: coords[0], y: coords[1] });
+    updateBoardDom(gameManager.getOtherBoard(), otherPlayerBoardDOM);
+    updateBoardDom(gameManager.getPlayerBoard(), playerBoardDOM, true);
+  }
+});
 gameManager.newGame(10, players);
+gameManager.startGame();
 let playerBoardDOM = createBoardDOM(10, "player");
 let otherPlayerBoardDOM = createBoardDOM(10, "other");
-updateBoardDom(gameManager.getPlayerBoard(), playerBoardDOM);
+updateBoardDom(gameManager.getPlayerBoard(), playerBoardDOM, true);
 updateBoardDom(gameManager.getOtherBoard(), otherPlayerBoardDOM);
 function createBoardDOM(size, id) {
   let boardDOM = new Array(size).fill("").map((_) => new Array(size).fill(""));
@@ -44,18 +50,15 @@ function formatArray(array) {
   }
   return result;
 }
-function updateBoardDom(board, boardDOM) {
+function updateBoardDom(board, boardDOM, displayships = false) {
   for (let i = 0; i < board.length; i++) {
     for (let j = 0; j < board[i].length; j++) {
       let content = board[i][j];
-      if (content == "ship") {
+      if (content == "ship" && displayships) {
         boardDOM[i][j].classList.add("ship");
       }
       if (content == "hit") {
         boardDOM[i][j].classList.add("hit");
-      }
-      if (content == "miss") {
-        boardDOM[i][j].classList.add("miss");
       }
       if (content == "miss") {
         boardDOM[i][j].classList.add("miss");
