@@ -67,11 +67,18 @@ class GameManager {
   }
 
   getPlayerBoard() {
+    return this.getBoardInfo(this.#playerBoard);
+  }
+  getOtherBoard() {
+    return this.getBoardInfo(this.#otherBoard);
+  }
+
+  getBoardInfo(targetBoard) {
     let board = new Array(size).fill("").map((_) => new Array(size).fill(""));
-    for (let i = 0; i < this.#playerBoard.length; i++) {
-      for (let j = 0; j < this.#playerBoard[i].length; j++) {
+    for (let i = 0; i < targetBoard.length; i++) {
+      for (let j = 0; j < targetBoard[i].length; j++) {
         let content = "empty";
-        let cell = this.#playerBoard[i][j];
+        let cell = targetBoard[i][j];
         if (!cell.isHit && cell.ship == null) {
           content = "empty";
         }
