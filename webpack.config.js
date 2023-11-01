@@ -2,6 +2,7 @@ const path = require("path");
 
 module.exports = {
   entry: "./src/DOMmanager.js",
+  devtool: "source-map",
   module: {
     rules: [
       {

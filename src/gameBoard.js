@@ -88,7 +88,9 @@ class GameBoard {
     }
     return canPlaceShip;
   }
-
+  getBoard() {
+    return this.#board;
+  }
   #coordinatesInRange(coordinates) {
     let { x, y } = coordinates;
     return !(
