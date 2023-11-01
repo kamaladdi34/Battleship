@@ -34,10 +34,10 @@ class GameManager {
       this.#playerBoard.placeShip({ x: 4, y: 0 }, 2, true);
 
       this.#otherBoard.placeShip({ x: 0, y: 0 }, 5);
-      this.#otherBoard.placeShip({ x: 1, y: 4 }, 4);
-      this.#otherBoard.placeShip({ x: 6, y: 0 }, 3);
+      this.#otherBoard.placeShip({ x: 1, y: 0 }, 4);
+      this.#otherBoard.placeShip({ x: 2, y: 0 }, 3);
       this.#otherBoard.placeShip({ x: 3, y: 0 }, 3);
-      this.#otherBoard.placeShip({ x: 9, y: 0 }, 2);
+      this.#otherBoard.placeShip({ x: 4, y: 0 }, 2);
       resolve("Game initiated");
     });
   }
