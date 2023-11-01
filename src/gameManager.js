@@ -6,13 +6,16 @@ class GameManager {
   #playerTurn = true;
   #playerBoard = null;
   #otherBoard = null;
+
   constructor() {
     this.player = null;
     this.otherPlayer = null;
   }
+
   get gameStarted() {
     return this.#gameStarted;
   }
+
   newGame(boardSize, players) {
     return new Promise((resolve, reject) => {
       if (!boardSize || !players || boardSize <= 0) {
@@ -38,6 +41,7 @@ class GameManager {
       resolve("Game initiated");
     });
   }
+
   startGame() {
     if (this.#gameStarted) {
       return;
@@ -48,6 +52,7 @@ class GameManager {
     return (this.#gameStarted =
       this.#playerBoard.allShipsPlaced() && this.#otherBoard.allShipsPlaced());
   }
+
   playTurn(coordinates) {
     if (!this.#gameStarted) {
       return;
@@ -59,6 +64,30 @@ class GameManager {
       this.#playerTurn = true;
       return this.#playerBoard.receiveAttack(coordinates);
     }
+  }
+
+  getPlayerBoard() {
+    let board = new Array(size).fill("").map((_) => new Array(size).fill(""));
+    for (let i = 0; i < this.#playerBoard.length; i++) {
+      for (let j = 0; j < this.#playerBoard[i].length; j++) {
+        let content = "empty";
+        let cell = this.#playerBoard[i][j];
+        if (!cell.isHit && cell.ship == null) {
+          content = "empty";
+        }
+        if (cell.isHit && cell.ship == null) {
+          content = "miss";
+        }
+        if (cell.isHit && cell.ship != null) {
+          content = "hit";
+        }
+        if (!cell.isHit && cell.ship != null) {
+          content = "ship";
+        }
+        board[i][j] = content;
+      }
+    }
+    return board;
   }
 }
 module.exports = GameManager;

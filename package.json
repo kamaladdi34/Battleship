@@ -2,8 +2,7 @@
   "name": "battleship",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
-  "main": "./src/ship.js",
+  "private": "true",
   "scripts": {
     "test": "jest"
   },
@@ -11,6 +10,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^29.7.0"
+    "css-loader": "^6.8.1",
+    "jest": "^29.7.0",
+    "style-loader": "^3.3.3",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
   }
 }
