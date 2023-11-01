@@ -8,6 +8,10 @@ test("Game manager has a startGame() funciton", () => {
 test("Game manager has a playTurn() funciton", () => {
   expect(GameManager.prototype.playTurn).toBeDefined();
 });
+test("Game manager has a getPlayerBoard() && getOtherBoard() funciton", () => {
+  expect(GameManager.prototype.getPlayerBoard).toBeDefined();
+  expect(GameManager.prototype.getOtherBoard).toBeDefined();
+});
 
 test("Game manager newGame() initiates a new game", () => {
   let gameManager = new GameManager();

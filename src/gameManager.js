@@ -67,13 +67,13 @@ class GameManager {
   }
 
   getPlayerBoard() {
-    return this.getBoardInfo(this.#playerBoard);
+    return this.#getBoardInfo(this.#playerBoard);
   }
   getOtherBoard() {
-    return this.getBoardInfo(this.#otherBoard);
+    return this.#getBoardInfo(this.#otherBoard);
   }
 
-  getBoardInfo(targetBoard) {
+  #getBoardInfo(targetBoard) {
     let board = new Array(size).fill("").map((_) => new Array(size).fill(""));
     for (let i = 0; i < targetBoard.length; i++) {
       for (let j = 0; j < targetBoard[i].length; j++) {
