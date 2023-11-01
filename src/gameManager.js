@@ -27,17 +27,17 @@ class GameManager {
       this.#playerBoard = new GameBoard(boardSize);
       this.#otherBoard = new GameBoard(boardSize);
 
-      this.#playerBoard.placeShip({ x: 0, y: 0 }, 5);
-      this.#playerBoard.placeShip({ x: 1, y: 0 }, 4);
-      this.#playerBoard.placeShip({ x: 2, y: 0 }, 3);
-      this.#playerBoard.placeShip({ x: 3, y: 0 }, 3);
-      this.#playerBoard.placeShip({ x: 4, y: 0 }, 2);
+      this.#playerBoard.placeShip({ x: 0, y: 3 }, 5);
+      this.#playerBoard.placeShip({ x: 1, y: 3 }, 4);
+      this.#playerBoard.placeShip({ x: 2, y: 2 }, 3);
+      this.#playerBoard.placeShip({ x: 3, y: 5 }, 3);
+      this.#playerBoard.placeShip({ x: 4, y: 0 }, 2, true);
 
       this.#otherBoard.placeShip({ x: 0, y: 0 }, 5);
-      this.#otherBoard.placeShip({ x: 1, y: 0 }, 4);
-      this.#otherBoard.placeShip({ x: 2, y: 0 }, 3);
+      this.#otherBoard.placeShip({ x: 1, y: 4 }, 4);
+      this.#otherBoard.placeShip({ x: 6, y: 0 }, 3);
       this.#otherBoard.placeShip({ x: 3, y: 0 }, 3);
-      this.#otherBoard.placeShip({ x: 4, y: 0 }, 2);
+      this.#otherBoard.placeShip({ x: 9, y: 0 }, 2);
       resolve("Game initiated");
     });
   }
