@@ -69,8 +69,18 @@ class GameManager {
   getPlayerBoard() {
     return this.#getBoardInfo(this.#playerBoard.getBoard());
   }
+
   getOtherBoard() {
     return this.#getBoardInfo(this.#otherBoard.getBoard());
+  }
+
+  checkForWinner() {
+    if (this.#playerBoard.allShipsAreSunk()) {
+      return this.otherPlayer;
+    }
+    if (this.#otherBoard.allShipsAreSunk()) {
+      return this.player;
+    }
   }
 
   #getBoardInfo(targetBoard) {

@@ -28,6 +28,7 @@ body {
   background-color: rgb(0, 119, 255);
   border: 1px solid rgb(0, 0, 0);
 }
+.cell.ship.hit,
 .cell.hit {
   background-color: red;
 }
