@@ -83,7 +83,7 @@ function playTurn(coords) {
   let winner = gameManager.checkForWinner();
   if (winner) {
     console.log(winner);
-    info.innerText = `Winner is ${winner.name}`;
+    info.innerText = `🎉 Winner is ${winner.name}`;
   }
 }
 let computerCoords = [];
