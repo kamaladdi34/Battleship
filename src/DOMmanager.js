@@ -1,14 +1,31 @@
-const GameBoard = require("./gameBoard.js");
 const GameManager = require("./gameManager.js");
 const boardsContainer = document.querySelector(".boards-container");
-
-let players = [
-  { name: "player one", isComputer: false },
-  { name: "player two", isComputer: false },
-];
-
-const gameManager = new GameManager();
-
+const formButton = document.querySelector(".player-info > button");
+const playerNameInput = document.querySelector(".player-info > #player-name");
+const otherNameInput = document.querySelector(".player-info > #other-name");
+const info = document.querySelector("body > h3");
+let gameManager = null;
+let playerBoardDOM = null;
+let otherPlayerBoardDOM = null;
+formButton.addEventListener("click", (event) => {
+  event.preventDefault();
+  let playerName = playerNameInput.value;
+  let otherName = otherNameInput.value;
+  if (!playerName) {
+    playerNameInput.reportValidity();
+    console.log("wo");
+    return;
+  }
+  if (!otherName) {
+    otherNameInput.reportValidity();
+    return;
+  }
+  let players = [
+    { name: playerName, isComputer: false },
+    { name: otherName, isComputer: true },
+  ];
+  newGame(players);
+});
 document.addEventListener("click", (event) => {
   if (event.target.parentNode.id == "other") {
     let coords = event.target.getAttribute("data-coordinates").split(":");
@@ -16,14 +33,18 @@ document.addEventListener("click", (event) => {
   }
 });
 
-gameManager.newGame(10, players);
-gameManager.startGame();
+function newGame(players) {
+  gameManager = new GameManager();
+  boardsContainer.innerHTML = "";
+  gameManager.newGame(10, players);
+  gameManager.startGame();
 
-let playerBoardDOM = createBoardDOM(10, "player");
-let otherPlayerBoardDOM = createBoardDOM(10, "other");
+  playerBoardDOM = createBoardDOM(10, "player");
+  otherPlayerBoardDOM = createBoardDOM(10, "other");
 
-updateBoardDom(gameManager.getPlayerBoard(), playerBoardDOM, true);
-updateBoardDom(gameManager.getOtherBoard(), otherPlayerBoardDOM);
+  updateBoardDom(gameManager.getPlayerBoard(), playerBoardDOM, true);
+  updateBoardDom(gameManager.getOtherBoard(), otherPlayerBoardDOM);
+}
 
 function createBoardDOM(size, id) {
   let boardDOM = new Array(size).fill("").map((_) => new Array(size).fill(""));
@@ -53,19 +74,40 @@ function createBoardDOM(size, id) {
 function playTurn(coords) {
   let result = gameManager.playTurn({ x: coords[0], y: coords[1] });
   if (result.error) {
-    console.log(result.error);
     return;
   }
-  let x = Math.floor(Math.random() * 10);
-  let y = Math.floor(Math.random() * 10);
-  gameManager.playTurn({ x, y });
-  console.log(x, y);
+
+  gameManager.playTurn(getComputerCoordinates());
   updateBoardDom(gameManager.getOtherBoard(), otherPlayerBoardDOM);
   updateBoardDom(gameManager.getPlayerBoard(), playerBoardDOM, true);
   let winner = gameManager.checkForWinner();
   if (winner) {
     console.log(winner);
+    info.innerText = `Winner is ${winner.name}`;
   }
+}
+let computerCoords = [];
+function getComputerCoordinates() {
+  let coordinates = generateCoordinates();
+  while (checkCoordinates(coordinates)) {
+    coordinates = generateCoordinates();
+  }
+  computerCoords.push(coordinates);
+  return coordinates;
+}
+function checkCoordinates(coords) {
+  let included = false;
+  for (let coordinates of computerCoords) {
+    if (coordinates.x == coords.x && coordinates.y == coords.y) {
+      included = true;
+    }
+  }
+  return included;
+}
+function generateCoordinates() {
+  let x = Math.floor(Math.random() * 10);
+  let y = Math.floor(Math.random() * 10);
+  return { x, y };
 }
 function formatArray(array) {
   let result = [];

@@ -16,6 +16,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  gap: 5px;
 }
 .board {
   width: 300px;
@@ -37,4 +38,9 @@ body {
 }
 .cell.miss {
   background-color: brown;
+}
+.player-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }

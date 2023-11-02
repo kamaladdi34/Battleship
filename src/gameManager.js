@@ -58,11 +58,17 @@ class GameManager {
       return;
     }
     if (this.#playerTurn) {
-      this.#playerTurn = false;
-      return this.#otherBoard.receiveAttack(coordinates);
+      let result = this.#otherBoard.receiveAttack(coordinates);
+      if (!result.error) {
+        this.#playerTurn = false;
+      }
+      return result;
     } else {
-      this.#playerTurn = true;
-      return this.#playerBoard.receiveAttack(coordinates);
+      let result = this.#playerBoard.receiveAttack(coordinates);
+      if (!result.error) {
+        this.#playerTurn = true;
+      }
+      return result;
     }
   }
 
