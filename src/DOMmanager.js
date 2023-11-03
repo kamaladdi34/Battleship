@@ -4,6 +4,11 @@ const formButton = document.querySelector(".player-info > button");
 const playerNameInput = document.querySelector(".player-info > #player-name");
 const otherNameInput = document.querySelector(".player-info > #other-name");
 const info = document.querySelector("body > h3");
+const ship5Input = document.querySelector("#ship-5");
+const ship4Input = document.querySelector("#ship-4");
+const ship3Input = document.querySelector("#ship-3");
+const ship3Input2 = document.querySelector("#ship-3-2");
+const ship2Input = document.querySelector("#ship-2");
 let gameManager = null;
 let playerBoardDOM = null;
 let otherPlayerBoardDOM = null;
@@ -13,7 +18,6 @@ formButton.addEventListener("click", (event) => {
   let otherName = otherNameInput.value;
   if (!playerName) {
     playerNameInput.reportValidity();
-    console.log("wo");
     return;
   }
   if (!otherName) {
@@ -33,10 +37,18 @@ document.addEventListener("click", (event) => {
   }
 });
 
-function newGame(players) {
+async function newGame(players) {
   gameManager = new GameManager();
   boardsContainer.innerHTML = "";
-  gameManager.newGame(10, players);
+  let result = await gameManager
+    .newGame(10, players, getCoordinatesInput())
+    .catch((error) => {
+      console.log(error);
+      window.alert("Wrong coordinates");
+    });
+  if (result != "Game initiated") {
+    return;
+  }
   gameManager.startGame();
 
   playerBoardDOM = createBoardDOM(10, "player");
@@ -82,10 +94,10 @@ function playTurn(coords) {
   updateBoardDom(gameManager.getPlayerBoard(), playerBoardDOM, true);
   let winner = gameManager.checkForWinner();
   if (winner) {
-    console.log(winner);
     info.innerText = `🎉 Winner is ${winner.name}`;
   }
 }
+
 let computerCoords = [];
 function getComputerCoordinates() {
   let coordinates = generateCoordinates();
@@ -95,6 +107,7 @@ function getComputerCoordinates() {
   computerCoords.push(coordinates);
   return coordinates;
 }
+
 function checkCoordinates(coords) {
   let included = false;
   for (let coordinates of computerCoords) {
@@ -104,11 +117,13 @@ function checkCoordinates(coords) {
   }
   return included;
 }
+
 function generateCoordinates() {
   let x = Math.floor(Math.random() * 10);
   let y = Math.floor(Math.random() * 10);
   return { x, y };
 }
+
 function formatArray(array) {
   let result = [];
   for (let i = 0; i < array.length; i++) {
@@ -117,12 +132,28 @@ function formatArray(array) {
   return result;
 }
 
+function getCoordinatesInput() {
+  let coordinates = [];
+  let ship5 = ship5Input.value.split("-");
+  coordinates.push({ length: 5, coords: { x: +ship5[1], y: +ship5[0] } });
+  let ship4 = ship4Input.value.split("-");
+  coordinates.push({ length: 4, coords: { x: +ship4[1], y: +ship4[0] } });
+  let ship3 = ship3Input.value.split("-");
+  coordinates.push({ length: 3, coords: { x: +ship3[1], y: +ship3[0] } });
+  let ship3_2 = ship3Input2.value.split("-");
+  coordinates.push({ length: 3, coords: { x: +ship3_2[1], y: +ship3_2[0] } });
+  let ship2 = ship2Input.value.split("-");
+  coordinates.push({ length: 2, coords: { x: +ship2[1], y: +ship2[0] } });
+  return coordinates;
+}
+
 function updateBoardDom(board, boardDOM, displayships = false) {
   for (let i = 0; i < board.length; i++) {
     for (let j = 0; j < board[i].length; j++) {
       let content = board[i][j];
       if (content == "ship" && displayships) {
         boardDOM[i][j].classList.add("ship");
+        boardDOM[i][j].setAttribute("draggable", true);
       }
       if (content == "hit") {
         boardDOM[i][j].classList.add("hit");

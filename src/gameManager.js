@@ -16,7 +16,7 @@ class GameManager {
     return this.#gameStarted;
   }
 
-  newGame(boardSize, players) {
+  newGame(boardSize, players, playerCoords) {
     return new Promise((resolve, reject) => {
       if (!boardSize || !players || boardSize <= 0) {
         reject("Incorrect game info");
@@ -27,12 +27,16 @@ class GameManager {
       this.#playerBoard = new GameBoard(boardSize);
       this.#otherBoard = new GameBoard(boardSize);
 
-      this.#playerBoard.placeShip({ x: 0, y: 3 }, 5);
-      this.#playerBoard.placeShip({ x: 1, y: 3 }, 4);
-      this.#playerBoard.placeShip({ x: 2, y: 2 }, 3);
-      this.#playerBoard.placeShip({ x: 3, y: 5 }, 3);
-      this.#playerBoard.placeShip({ x: 4, y: 0 }, 2, true);
-
+      for (let i = 0; i < playerCoords.length; i++) {
+        this.#playerBoard
+          .placeShip(playerCoords[i].coords, playerCoords[i].length)
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+      if (!this.#playerBoard.allShipsPlaced()) {
+        reject("Wrong ship coordinates");
+      }
       this.#otherBoard.placeShip({ x: 0, y: 0 }, 5);
       this.#otherBoard.placeShip({ x: 1, y: 0 }, 4);
       this.#otherBoard.placeShip({ x: 2, y: 0 }, 3);
