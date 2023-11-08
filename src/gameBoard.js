@@ -25,20 +25,28 @@ class GameBoard {
     let { x, y } = coordinates;
     return new Promise((resolve, reject) => {
       if (!this.#checkCoordinates(coordinates)) {
-        reject("Coordinates out of range");
+        reject(
+          `Coordinates out of range, ${coordinates.x},${coordinates.y}, ship length: ${shipLength}`
+        );
         return;
       }
       if (this.#board[x][y].ship !== null) {
-        reject("Target coordinates not empty");
+        reject(
+          `Target coordinates not empty, ${coordinates.x},${coordinates.y}, ship length: ${shipLength}`
+        );
         return;
       }
       if (!this.#checkForSpace(coordinates, shipLength, isVertical)) {
-        reject("Not enough space");
+        reject(
+          `Not enough space, ${coordinates.x},${coordinates.y}, ship length: ${shipLength}`
+        );
         return;
       }
       let newShip = this.#getShip(shipLength);
       if (!newShip) {
-        reject("No ship found");
+        reject(
+          `No ship found, ${coordinates.x},${coordinates.y}, ship length: ${shipLength}`
+        );
       }
       if (!isVertical) {
         for (let i = 0; i < shipLength; i++) {

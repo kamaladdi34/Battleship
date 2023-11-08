@@ -17,7 +17,7 @@ class GameManager {
   }
 
   newGame(boardSize, players, playerCoords) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       if (!boardSize || !players || boardSize <= 0) {
         reject("Incorrect game info");
       }
@@ -37,15 +37,42 @@ class GameManager {
       if (!this.#playerBoard.allShipsPlaced()) {
         reject("Wrong ship coordinates");
       }
-      this.#otherBoard.placeShip({ x: 0, y: 0 }, 5);
-      this.#otherBoard.placeShip({ x: 1, y: 0 }, 4);
-      this.#otherBoard.placeShip({ x: 2, y: 0 }, 3);
-      this.#otherBoard.placeShip({ x: 3, y: 0 }, 3);
-      this.#otherBoard.placeShip({ x: 4, y: 0 }, 2);
+      // this.#otherBoard.placeShip({ x: 0, y: 0 }, 5);
+      // this.#otherBoard.placeShip({ x: 1, y: 0 }, 4);
+      // this.#otherBoard.placeShip({ x: 2, y: 0 }, 3);
+      // this.#otherBoard.placeShip({ x: 3, y: 0 }, 3);
+      // this.#otherBoard.placeShip({ x: 4, y: 0 }, 2);
+      await this.generateComputerBoard();
       resolve("Game initiated");
     });
   }
-
+  async generateComputerBoard() {
+    let shipLengths = [5, 4, 3, 3, 2];
+    let currentShip = 0;
+    while (!this.#otherBoard.allShipsPlaced()) {
+      let coordinates = this.generateCoordinates();
+      try {
+        await this.#otherBoard.placeShip(
+          coordinates,
+          shipLengths[currentShip],
+          Math.floor(Math.random() * 2)
+        );
+        console.log(
+          `placed ship with length ${shipLengths[currentShip]} at ${coordinates.y},${coordinates.x}`
+        );
+        currentShip++;
+      } catch (error) {
+        console.log(
+          `failed to place ship ${shipLengths[currentShip]} at ${coordinates.y},${coordinates.x}, ${error}`
+        );
+      }
+    }
+  }
+  generateCoordinates = () => {
+    let x = Math.floor(Math.random() * 10);
+    let y = Math.floor(Math.random() * 10);
+    return { x, y };
+  };
   startGame() {
     if (this.#gameStarted) {
       return;
