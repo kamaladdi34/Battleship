@@ -151,7 +151,7 @@ function updateBoardDom(board, boardDOM, displayships = false) {
   for (let i = 0; i < board.length; i++) {
     for (let j = 0; j < board[i].length; j++) {
       let content = board[i][j];
-      if (content == "ship" && true) {
+      if (content == "ship" && displayships) {
         boardDOM[i][j].classList.add("ship");
         boardDOM[i][j].setAttribute("draggable", true);
       }
